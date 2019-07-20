@@ -59,6 +59,8 @@ def web_chat_join():
         return jsonify({'status': True})
 
 
+
+
 if __name__ == '__main__':
     # 使用长轮询时，由于消息队列会阻塞，所以必须使用多线程
     app.run(host='0.0.0.0', port='8888', threaded=True)
