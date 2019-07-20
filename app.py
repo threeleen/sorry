@@ -14,7 +14,6 @@ def hello_world():
 user_dict = {}
 
 
-
 @app.route('/web_chat', methods=['GET', 'POST'])
 def web_chat():
     # 前端发送过来信息，将信息群发给除发送用户外的所有用户
