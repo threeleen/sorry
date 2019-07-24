@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+import time
+
 from flask import Flask, render_template, session, request, jsonify
 import Queue
 
@@ -39,7 +41,7 @@ def get_msg():
         ret = {'status': True, 'data': None}
         q = user_dict[username]
         try:
-            msg = q.get(timeout=3)
+            msg = q.get(block=False,timeout=3)
             ret['data'] = msg
         except Exception, e:
             print str(e)
@@ -52,7 +54,7 @@ def web_chat_join():
     # 加入聊天室，把用户加入user_dict，并为用户创建消息队列
     if request.method == 'POST':
         username = request.form.get('username')
-        q = Queue.Queue()
+        q = Queue.Queue(maxsize=0)
         user_dict[username] = q
         session['current_username'] = username
         msg = {'send_msg': '加入房间！', 'send_user': username}
@@ -64,4 +66,4 @@ def web_chat_join():
 
 if __name__ == '__main__':
     # 使用长轮询时，由于消息队列会阻塞，所以必须使用多线程
-    app.run(host='0.0.0.0', port='8888', threaded=True)
+    app.run(host='0.0.0.0', port='8888', threaded=True, debug=True)
